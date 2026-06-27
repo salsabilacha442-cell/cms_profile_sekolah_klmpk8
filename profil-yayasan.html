@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman - YP Nusantara Sejahtera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* ==================== SIDEBAR STANDAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a2a4f 0%, #0f1a2e 100%);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon-small {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .sidebar-header p {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            margin: 4px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 22px;
+            font-size: 16px;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #1a2a4f;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                left: -280px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+        /* ==================== END SIDEBAR ==================== */
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px 32px;
+            transition: all 0.3s;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 28px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .page-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 6px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 6px rgba(102,126,234,0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(102,126,234,0.4);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -8px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .stat-info p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select, .search-input {
+            padding: 10px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-select:focus, .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .search-input {
+            width: 260px;
+        }
+
+        /* Pengumuman List */
+        .pengumuman-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pengumuman-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 24px;
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pengumuman-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1);
+        }
+
+        /* Priority Border */
+        .pengumuman-card.penting {
+            border-left: 5px solid #ea4335;
+            background: linear-gradient(90deg, #fff 0%, #fff 95%);
+        }
+
+        .pengumuman-card.biasa {
+            border-left: 5px solid #2a5298;
+        }
+
+        .pengumuman-card.terbatas {
+            border-left: 5px solid #fbbc04;
+            background: #fffef7;
+        }
+
+        /* Header */
+        .pengumuman-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pengumuman-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2a4f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pengumuman-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-penting {
+            background: #fce8e6;
+            color: #ea4335;
+        }
+
+        .badge-biasa {
+            background: #e8f0fe;
+            color: #2a5298;
+        }
+
+        .badge-terbatas {
+            background: #fef7e0;
+            color: #fbbc04;
+        }
+
+        /* Meta Info */
+        .pengumuman-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 14px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .pengumuman-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Content */
+        .pengumuman-content {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        /* Actions */
+        .pengumuman-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .action-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-view { background: #e0e7ff; color: #4338ca; }
+        .btn-view:hover { background: #c7d2fe; }
+
+        .btn-edit { background: #fef3c7; color: #92400e; }
+        .btn-edit:hover { background: #fde68a; }
+
+        .btn-delete { background: #fee2e2; color: #b91c1c; }
+        .btn-delete:hover { background: #fecaca; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .pengumuman-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon-small">
+                <i class="fas fa-landmark" style="font-size: 24px;"></i>
+            </div>
+            <h2>YP Nusantara Sejahtera</h2>
+            <p>Admin Panel Yayasan</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
+            <div class="nav-item" data-page="profil"><i class="fas fa-building"></i><span>Profil Yayasan</span></div>
+            <div class="nav-item" data-page="struktur"><i class="fas fa-sitemap"></i><span>Struktur Organisasi</span></div>
+            <div class="nav-item" data-page="sekolah"><i class="fas fa-school"></i><span>Kelola Sekolah</span></div>
+            <div class="nav-item" data-page="guru"><i class="fas fa-chalkboard-user"></i><span>Data Guru & Dosen</span></div>
+            <div class="nav-item" data-page="siswa"><i class="fas fa-users"></i><span>Data Siswa</span></div>
+            <div class="nav-item" data-page="ekskul"><i class="fas fa-futbol"></i><span>Ekstrakurikuler</span></div>
+            <div class="nav-item" data-page="prestasi"><i class="fas fa-trophy"></i><span>Prestasi</span></div>
+            <div class="nav-item" data-page="fasilitas"><i class="fas fa-building"></i><span>Fasilitas</span></div>
+            <div class="nav-item" data-page="galeri"><i class="fas fa-images"></i><span>Galeri</span></div>
+            <div class="nav-item active" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span></div>
+            <div class="nav-item" data-page="alumni"><i class="fas fa-user-graduate"></i><span>Alumni</span></div>
+            <div class="nav-item" data-page="berita"><i class="fas fa-newspaper"></i><span>Berita & Artikel</span></div>
+            <div class="nav-item" data-page="kontak"><i class="fas fa-phone"></i><span>Kontak</span></div>
+            <div class="nav-item" data-page="laporan"><i class="fas fa-file-excel"></i><span>Laporan</span></div>
+            <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="page-title">
+                <h1>📢 Pengumuman Resmi</h1>
+                <p>Kelola pengumuman untuk seluruh unit yayasan</p>
+            </div>
+            <button class="btn-add" id="openModalBtn">
+                <i class="fas fa-plus"></i> Buat Pengumuman
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <select class="filter-select" id="filterUnit">
+                    <option value="">📌 Semua Unit</option>
+                    <option value="Umum">🏛️ Umum (Yayasan)</option>
+                    <option value="TK">🏫 TK Nusantara Ceria</option>
+                    <option value="SD">📚 SD Nusantara Unggul</option>
+                    <option value="SMP">📖 SMP Nusantara Gemilang</option>
+                    <option value="SMA">🎓 SMA Nusantara Prestasi</option>
+                    <option value="Universitas">🏛️ Universitas Nusantara Digital</option>
+                </select>
+                <select class="filter-select" id="filterPriority">
+                    <option value="">⚠️ Semua Prioritas</option>
+                    <option value="Penting">🔴 Penting</option>
+                    <option value="Biasa">🔵 Biasa</option>
+                    <option value="Terbatas">🟡 Terbatas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cari pengumuman...">
+            </div>
+        </div>
+
+        <!-- Pengumuman List -->
+        <div class="pengumuman-list" id="pengumumanList"></div>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal" id="pengumumanModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-bullhorn"></i> Buat Pengumuman</h2>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <input type="hidden" id="editId">
+            
+            <div class="form-group">
+                <label>Judul Pengumuman</label>
+                <input type="text" id="pengumumanTitle" placeholder="Masukkan judul pengumuman">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Unit Tujuan</label>
+                    <select id="pengumumanUnit">
+                        <option value="Umum">🏛️ Umum (Seluruh Yayasan)</option>
+                        <option value="TK">🏫 TK Nusantara Ceria</option>
+                        <option value="SD">📚 SD Nusantara Unggul</option>
+                        <option value="SMP">📖 SMP Nusantara Gemilang</option>
+                        <option value="SMA">🎓 SMA Nusantara Prestasi</option>
+                        <option value="Universitas">🏛️ Universitas Nusantara Digital</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Prioritas</label>
+                    <select id="pengumumanPriority">
+                        <option value="Biasa">🔵 Biasa</option>
+                        <option value="Penting">🔴 Penting</option>
+                        <option value="Terbatas">🟡 Terbatas (Internal)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tanggal Mulai</label>
+                    <input type="date" id="pengumumanStartDate">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Berakhir (opsional)</label>
+                    <input type="date" id="pengumumanEndDate">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Isi Pengumuman</label>
+                <textarea id="pengumumanContent" placeholder="Tulis isi pengumuman di sini..."></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-submit" id="saveBtn">Publikasikan</button>
+                <button class="btn-cancel" id="cancelModalBtn">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-info-circle"></i> Detail Pengumuman</h2>
+                <button class="modal-close" id="closeDetailBtn">&times;</button>
+            </div>
+            <div id="detailContent"></div>
+            <div class="modal-footer">
+                <button class="btn-submit" id="editFromDetailBtn" style="background:#fef3c7; color:#92400e;">✏️ Edit</button>
+                <button class="btn-cancel" id="closeDetailModalBtn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if(!localStorage.getItem('isLoggedIn')) window.location.href = '../index.html';
+
+        let pengumuman = JSON.parse(localStorage.getItem('pengumuman')) || [
+            {id:1, title:'Libur Semester Ganjil 2024/2025', unit:'Umum', priority:'Penting', content:'Libur semester ganjil dimulai tanggal 20 Desember 2024 sampai 5 Januari 2025. Selamat liburan dan tetap semangat!', startDate:'2024-12-15', endDate:'2025-01-05'},
+            {id:2, title:'Pendaftaran PPDB 2025/2026 Dibuka', unit:'Umum', priority:'Penting', content:'Pendaftaran peserta didik baru tahun ajaran 2025/2026 dibuka mulai 1 Januari 2025. Informasi lebih lanjut hubungi admin masing-masing unit.', startDate:'2024-12-10', endDate:'2025-03-31'},
+            {id:3, title:'Rapat Orang Tua Siswa', unit:'SD', priority:'Biasa', content:'Diberitahukan kepada seluruh orang tua siswa SD Nusantara Unggul akan diadakan rapat pada Sabtu, 14 Desember 2024 pukul 09.00 di Aula Sekolah.', startDate:'2024-12-05', endDate:'2024-12-14'},
+            {id:4, title:'Peringatan Maulid Nabi Muhammad SAW', unit:'Umum', priority:'Biasa', content:'Seluruh unit yayasan akan mengadakan peringatan Maulid Nabi pada tanggal 15 Desember 2024. Kegiatan dimulai pukul 08.00.', startDate:'2024-12-01', endDate:'2024-12-15'},
+            {id:5, title:'Pengumuman Kelulusan Mahasiswa', unit:'Universitas', priority:'Terbatas', content:'Pengumuman kelulusan mahasiswa periode Desember 2024 dapat dilihat di papan pengumuman kampus.', startDate:'2024-12-08', endDate:'2024-12-20'},
+        ];
+
+        function saveToLocalStorage() { localStorage.setItem('pengumuman', JSON.stringify(pengumuman)); }
+
+        function getPriorityIcon(priority) {
+            const map = {Penting:'🔴', Biasa:'🔵', Terbatas:'🟡'};
+            return map[priority] || '📢';
+        }
+
+        function getPriorityClass(priority) {
+            if(priority === 'Penting') return 'pengumuman-card penting';
+            if(priority === 'Terbatas') return 'pengumuman-card terbatas';
+            return 'pengumuman-card biasa';
+        }
+
+        function getUnitIcon(unit) {
+            const map = {Umum:'🏛️', TK:'🏫', SD:'📚', SMP:'📖', SMA:'🎓', Universitas:'🏛️'};
+            return map[unit] || '🏛️';
+        }
+
+        function updateStats() {
+            const total = pengumuman.length;
+            const penting = pengumuman.filter(p => p.priority === 'Penting').length;
+            const biasa = pengumuman.filter(p => p.priority === 'Biasa').length;
+            const terbatas = pengumuman.filter(p => p.priority === 'Terbatas').length;
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#e0e7ff;"><i class="fas fa-bullhorn" style="color:#4338ca; font-size:22px;"></i></div>
+                    <div class="stat-info"><h3>${total}</h3><p>Total Pengumuman</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fce8e6;"><i class="fas fa-exclamation-triangle" style="color:#ea4335; font-size:22px;"></i></div>
+                    <div class="stat-info"><h3>${penting}</h3><p>Prioritas Penting</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#e8f0fe;"><i class="fas fa-info-circle" style="color:#2a5298; font-size:22px;"></i></div>
+                    <div class="stat-info"><h3>${biasa}</h3><p>Prioritas Biasa</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fef7e0;"><i class="fas fa-lock" style="color:#fbbc04; font-size:22px;"></i></div>
+                    <div class="stat-info"><h3>${terbatas}</h3><p>Terbatas</p></div>
+                </div>
+            `;
+        }
+
+        function renderPengumuman() {
+            const filterUnit = document.getElementById('filterUnit').value;
+            const filterPriority = document.getElementById('filterPriority').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = pengumuman;
+            if(filterUnit) filtered = filtered.filter(p => p.unit === filterUnit);
+            if(filterPriority) filtered = filtered.filter(p => p.priority === filterPriority);
+            if(searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm) || p.content.toLowerCase().includes(searchTerm));
+            
+            const container = document.getElementById('pengumumanList');
+            
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-bullhorn"></i><br>Tidak ada pengumuman</div>`;
+                updateStats();
+                return;
+            }
+            
+            container.innerHTML = filtered.map(p => `
+                <div class="${getPriorityClass(p.priority)}">
+                    <div class="pengumuman-header">
+                        <div class="pengumuman-title">
+                            ${p.title}
+                            <span class="pengumuman-badge ${p.priority === 'Penting' ? 'badge-penting' : (p.priority === 'Terbatas' ? 'badge-terbatas' : 'badge-biasa')}">
+                                ${getPriorityIcon(p.priority)} ${p.priority}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pengumuman-meta">
+                        <span><i class="fas fa-building"></i> ${getUnitIcon(p.unit)} ${p.unit}</span>
+                        <span><i class="fas fa-calendar-alt"></i> 📅 ${p.startDate} ${p.endDate ? `s/d ${p.endDate}` : ''}</span>
+                    </div>
+                    <div class="pengumuman-content">
+                        ${p.content.length > 200 ? p.content.substring(0, 200) + '...' : p.content}
+                    </div>
+                    <div class="pengumuman-actions">
+                        <button class="action-btn btn-view" onclick="viewPengumuman(${p.id})"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-btn btn-edit" onclick="editPengumuman(${p.id})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="action-btn btn-delete" onclick="deletePengumuman(${p.id})"><i class="fas fa-trash"></i> Hapus</button>
+                    </div>
+                </div>
+            `).join('');
+            updateStats();
+        }
+
+        // View Detail
+        window.viewPengumuman = (id) => {
+            const item = pengumuman.find(p => p.id === id);
+            if(item) {
+                let detailHtml = `
+                    <div class="detail-item" style="margin-bottom:16px;">
+                        <div style="font-size:11px; color:#94a3b8;">Judul Pengumuman</div>
+                        <div style="font-size:18px; font-weight:700;">${item.title}</div>
+                    </div>
+                    <div class="detail-item" style="margin-bottom:12px;">
+                        <div style="font-size:11px; color:#94a3b8;">Prioritas</div>
+                        <div><span class="pengumuman-badge ${item.priority === 'Penting' ? 'badge-penting' : (item.priority === 'Terbatas' ? 'badge-terbatas' : 'badge-biasa')}">${getPriorityIcon(item.priority)} ${item.priority}</span></div>
+                    </div>
+                    <div class="detail-item" style="margin-bottom:12px;">
+                        <div style="font-size:11px; color:#94a3b8;">Unit Tujuan</div>
+                        <div>${getUnitIcon(item.unit)} ${item.unit}</div>
+                    </div>
+                    <div class="detail-item" style="margin-bottom:12px;">
+                        <div style="font-size:11px; color:#94a3b8;">Periode</div>
+                        <div>📅 ${item.startDate} ${item.endDate ? `s/d ${item.endDate}` : ''}</div>
+                    </div>
+                    <div class="divider" style="height:1px; background:#e2e8f0; margin:16px 0;"></div>
+                    <div class="detail-item">
+                        <div style="font-size:11px; color:#94a3b8;">Isi Pengumuman</div>
+                        <div style="margin-top:8px; line-height:1.6;">${item.content}</div>
+                    </div>
+                `;
+                
+                document.getElementById('detailContent').innerHTML = detailHtml;
+                document.getElementById('detailModal').style.display = 'flex';
+                
+                document.getElementById('editFromDetailBtn').onclick = () => {
+                    document.getElementById('detailModal').style.display = 'none';
+                    editPengumuman(item.id);
+                };
+            }
+        };
+
+        const modal = document.getElementById('pengumumanModal');
+        const detailModal = document.getElementById('detailModal');
+
+        document.getElementById('openModalBtn').onclick = () => {
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus"></i> Buat Pengumuman';
+            document.getElementById('editId').value = '';
+            document.getElementById('pengumumanTitle').value = '';
+            document.getElementById('pengumumanUnit').value = 'Umum';
+            document.getElementById('pengumumanPriority').value = 'Biasa';
+            document.getElementById('pengumumanContent').value = '';
+            document.getElementById('pengumumanStartDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('pengumumanEndDate').value = '';
+            modal.style.display = 'flex';
+        };
+
+        document.getElementById('closeModalBtn').onclick = () => modal.style.display = 'none';
+        document.getElementById('cancelModalBtn').onclick = () => modal.style.display = 'none';
+        document.getElementById('closeDetailBtn').onclick = () => detailModal.style.display = 'none';
+        document.getElementById('closeDetailModalBtn').onclick = () => detailModal.style.display = 'none';
+
+        document.getElementById('saveBtn').onclick = () => {
+            const id = document.getElementById('editId').value;
+            const title = document.getElementById('pengumumanTitle').value;
+            const unit = document.getElementById('pengumumanUnit').value;
+            const priority = document.getElementById('pengumumanPriority').value;
+            const content = document.getElementById('pengumumanContent').value;
+            const startDate = document.getElementById('pengumumanStartDate').value;
+            const endDate = document.getElementById('pengumumanEndDate').value;
+
+            if(!title || !content) return alert('⚠️ Judul dan isi pengumuman harus diisi!');
+            if(!startDate) return alert('⚠️ Tanggal mulai harus diisi!');
+
+            if(id) {
+                const index = pengumuman.findIndex(p => p.id == id);
+                if(index !== -1) pengumuman[index] = {id: parseInt(id), title, unit, priority, content, startDate, endDate};
+            } else {
+                const newId = Math.max(...pengumuman.map(p => p.id), 0) + 1;
+                pengumuman.push({id:newId, title, unit, priority, content, startDate, endDate});
+            }
+            saveToLocalStorage();
+            renderPengumuman();
+            modal.style.display = 'none';
+        };
+
+        window.editPengumuman = (id) => {
+            const item = pengumuman.find(p => p.id === id);
+            if(item) {
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Pengumuman';
+                document.getElementById('editId').value = item.id;
+                document.getElementById('pengumumanTitle').value = item.title;
+                document.getElementById('pengumumanUnit').value = item.unit;
+                document.getElementById('pengumumanPriority').value = item.priority;
+                document.getElementById('pengumumanContent').value = item.content;
+                document.getElementById('pengumumanStartDate').value = item.startDate;
+                document.getElementById('pengumumanEndDate').value = item.endDate || '';
+                modal.style.display = 'flex';
+            }
+        };
+
+        window.deletePengumuman = (id) => {
+            if(confirm('⚠️ Yakin ingin menghapus pengumuman ini?')) {
+                pengumuman = pengumuman.filter(p => p.id !== id);
+                saveToLocalStorage();
+                renderPengumuman();
+            }
+        };
+
+        document.getElementById('filterUnit').addEventListener('change', renderPengumuman);
+        document.getElementById('filterPriority').addEventListener('change', renderPengumuman);
+        document.getElementById('searchInput').addEventListener('input', renderPengumuman);
+        renderPengumuman();
+
+        // ==================== NAVIGASI STANDAR ====================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                const pages = {
+                    dashboard: 'dashboard.html',
+                    profil: 'profil-yayasan.html',
+                    struktur: 'struktur-organisasi.html',
+                    sekolah: 'data-sekolah.html',
+                    guru: 'data-guru.html',
+                    siswa: 'data-siswa.html',
+                    ekskul: 'ekstrakurikuler.html',
+                    prestasi: 'prestasi.html',
+                    fasilitas: 'fasilitas.html',
+                    galeri: 'galeri.html',
+                    pengumuman: 'pengumuman.html',
+                    alumni: 'alumni.html',
+                    berita: 'berita.html',
+                    kontak: 'kontak.html',
+                    laporan: 'laporan.html'
+                };
+                if(pages[page]) window.location.href = pages[page];
+            });
+        });
+
+        document.getElementById('logoutBtn').onclick = () => {
+            if(confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = '../index.html';
+            }
+        };
+
+        document.getElementById('menuToggle').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+
+        window.onclick = function(event) {
+            if (event.target === modal) modal.style.display = 'none';
+            if (event.target === detailModal) detailModal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

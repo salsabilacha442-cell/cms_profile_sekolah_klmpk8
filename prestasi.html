@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - YP Nusantara Sejahtera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* ==================== SIDEBAR STANDAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a2a4f 0%, #0f1a2e 100%);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon-small {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .sidebar-header p {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            margin: 4px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 22px;
+            font-size: 16px;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #1a2a4f;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                left: -280px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+        /* ==================== END SIDEBAR ==================== */
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px 32px;
+            transition: all 0.3s;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .page-title p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        /* Button Group */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-export-excel {
+            background: linear-gradient(135deg, #1e7e34 0%, #34a853 100%);
+        }
+
+        .btn-export-pdf {
+            background: linear-gradient(135deg, #c5221f 0%, #ea4335 100%);
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-info h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .stat-info p {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 8px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Charts Container */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #f0f2f5;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2a4f;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        canvas {
+            max-height: 280px;
+            width: 100%;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            overflow-x: auto;
+            border: 1px solid #f0f2f5;
+            margin-bottom: 24px;
+        }
+
+        .table-container h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2a4f;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+        }
+
+        tr:hover {
+            background: #fafcff;
+        }
+
+        .badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-a { background: #dcfce7; color: #166534; }
+        .badge-b { background: #fef3c7; color: #92400e; }
+        .badge-c { background: #fee2e2; color: #b91c1c; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon-small">
+                <i class="fas fa-landmark" style="font-size: 24px;"></i>
+            </div>
+            <h2>YP Nusantara Sejahtera</h2>
+            <p>Admin Panel Yayasan</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
+            <div class="nav-item" data-page="profil"><i class="fas fa-building"></i><span>Profil Yayasan</span></div>
+            <div class="nav-item" data-page="struktur"><i class="fas fa-sitemap"></i><span>Struktur Organisasi</span></div>
+            <div class="nav-item" data-page="sekolah"><i class="fas fa-school"></i><span>Kelola Sekolah</span></div>
+            <div class="nav-item" data-page="guru"><i class="fas fa-chalkboard-user"></i><span>Data Guru & Dosen</span></div>
+            <div class="nav-item" data-page="siswa"><i class="fas fa-users"></i><span>Data Siswa</span></div>
+            <div class="nav-item" data-page="ekskul"><i class="fas fa-futbol"></i><span>Ekstrakurikuler</span></div>
+            <div class="nav-item" data-page="prestasi"><i class="fas fa-trophy"></i><span>Prestasi</span></div>
+            <div class="nav-item" data-page="fasilitas"><i class="fas fa-building"></i><span>Fasilitas</span></div>
+            <div class="nav-item" data-page="galeri"><i class="fas fa-images"></i><span>Galeri</span></div>
+            <div class="nav-item" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span></div>
+            <div class="nav-item" data-page="alumni"><i class="fas fa-user-graduate"></i><span>Alumni</span></div>
+            <div class="nav-item" data-page="berita"><i class="fas fa-newspaper"></i><span>Berita & Artikel</span></div>
+            <div class="nav-item" data-page="kontak"><i class="fas fa-phone"></i><span>Kontak</span></div>
+            <div class="nav-item active" data-page="laporan"><i class="fas fa-file-excel"></i><span>Laporan</span></div>
+            <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="page-title">
+                <h1>📊 Laporan & Export Data</h1>
+                <p>Lihat statistik dan export data ke Excel/PDF</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn-export btn-export-excel" id="exportExcelBtn">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </button>
+                <button class="btn-export btn-export-pdf" id="exportPdfBtn">
+                    <i class="fas fa-file-pdf"></i> Export PDF
+                </button>
+                <button class="btn-export" id="printBtn">
+                    <i class="fas fa-print"></i> Cetak
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <select class="filter-select" id="filterReport">
+                    <option value="summary">📋 Ringkasan Yayasan</option>
+                    <option value="sekolah">🏫 Laporan Sekolah</option>
+                    <option value="guru">👨‍🏫 Laporan Guru & Dosen</option>
+                    <option value="siswa">👨‍🎓 Laporan Siswa</option>
+                    <option value="prestasi">🏆 Laporan Prestasi</option>
+                    <option value="ekskul">⚽ Laporan Ekstrakurikuler</option>
+                    <option value="fasilitas">🏛️ Laporan Fasilitas</option>
+                    <option value="alumni">🎓 Laporan Alumni</option>
+                </select>
+                <select class="filter-select" id="filterYear" style="display:none;">
+                    <option value="">📅 Semua Tahun</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-container" id="chartsContainer"></div>
+
+        <!-- Table -->
+        <div class="table-container" id="tableContainer"></div>
+    </div>
+
+    <script>
+        if(!localStorage.getItem('isLoggedIn')) window.location.href = '../index.html';
+
+        // Ambil data dari localStorage
+        let schools = JSON.parse(localStorage.getItem('schools')) || [
+            {id:1, name:'TK Nusantara Ceria', level:'TK', accreditation:'A', students:185, teachers:14},
+            {id:2, name:'SD Nusantara Unggul', level:'SD', accreditation:'A', students:560, teachers:32},
+            {id:3, name:'SMP Nusantara Gemilang', level:'SMP', accreditation:'A', students:645, teachers:38},
+            {id:4, name:'SMA Nusantara Prestasi', level:'SMA', accreditation:'A', students:590, teachers:44},
+            {id:5, name:'Universitas Nusantara Digital', level:'Kuliah', accreditation:'B', students:245, teachers:28}
+        ];
+        
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [
+            {id:1, name:'Umi Kalsum, S.Pd.I', level:'TK', mapel:'Agama', position:'Guru Tetap'},
+            {id:2, name:'Siti Aminah, S.Pd', level:'SD', mapel:'Bahasa Indonesia', position:'Guru Tetap'},
+            {id:3, name:'Drs. Budi Santoso', level:'SMP', mapel:'IPA', position:'Guru Tetap'},
+            {id:4, name:'Dr. Ahmad Fauzi, M.Pd', level:'SMA', mapel:'Matematika', position:'Kepala Sekolah'},
+            {id:5, name:'Prof. Dr. Budi Santoso, M.Kom', level:'Kuliah', faculty:'Fakultas Teknik & Informatika', position:'Dekan'},
+        ];
+        
+        let students = JSON.parse(localStorage.getItem('students')) || [
+            {id:1, name:'Ahmad Rizki', level:'TK', class:'TK B', status:'Aktif'},
+            {id:2, name:'Siti Nurhaliza', level:'SD', class:'5A', status:'Aktif'},
+            {id:3, name:'Budi Santoso', level:'SD', class:'4B', status:'Aktif'},
+            {id:4, name:'Dewi Anggraeni', level:'SMP', class:'2A', status:'Aktif'},
+            {id:5, name:'Fathia Zahra', level:'SMA', class:'XI IPA 1', status:'Aktif'},
+            {id:6, name:'Hanna Marpaung', level:'Kuliah', prodi:'Teknik Informatika', status:'Aktif'},
+        ];
+        
+        let prestasi = JSON.parse(localStorage.getItem('prestasi')) || [
+            {id:1, name:'Olimpiade Sains', level:'SMA', winner:'Fathia Zahra', medal:'Emas', tingkat:'Nasional', year:2024},
+            {id:2, name:'Lomba Mewarnai', level:'TK', winner:'Ahmad Rizki', medal:'Perak', tingkat:'Provinsi', year:2024},
+        ];
+        
+        let ekskul = JSON.parse(localStorage.getItem('ekskul')) || [
+            {id:1, name:'Futsal', level:'SMA', coach:'Rizki Ramadhan', members:25},
+            {id:2, name:'Pramuka', level:'Umum', coach:'Drs. Budi Santoso', members:45},
+        ];
+        
+        let fasilitas = JSON.parse(localStorage.getItem('fasilitas')) || [
+            {id:1, name:'Laboratorium Komputer', level:'SMA', kategori:'Laboratorium'},
+            {id:2, name:'Perpustakaan', level:'Umum', kategori:'Perpustakaan'},
+        ];
+        
+        let alumni = JSON.parse(localStorage.getItem('alumni')) || [
+            {id:1, name:'Dr. Ahmad Fauzi', level:'SMA', year:2005, job:'Dosen'},
+            {id:2, name:'Siti Nurhaliza', level:'Universitas', year:2022, job:'Analis Keuangan'},
+        ];
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#e0e7ff;"><i class="fas fa-school" style="color:#4338ca; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${schools.length}</h3><p>Unit Sekolah</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#dcfce7;"><i class="fas fa-chalkboard-user" style="color:#166534; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${teachers.length}</h3><p>Tenaga Pendidik</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fef3c7;"><i class="fas fa-users" style="color:#92400e; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${students.length}</h3><p>Peserta Didik</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f3e8ff;"><i class="fas fa-trophy" style="color:#6b21a5; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${prestasi.length}</h3><p>Prestasi</p></div>
+                </div>
+            `;
+        }
+
+        // Render charts and table based on report type
+        function renderReport() {
+            const type = document.getElementById('filterReport').value;
+            const yearFilter = document.getElementById('filterYear').value;
+            
+            const chartsContainer = document.getElementById('chartsContainer');
+            const tableContainer = document.getElementById('tableContainer');
+            
+            // Show/hide year filter
+            const yearSelect = document.getElementById('filterYear');
+            yearSelect.style.display = type === 'prestasi' || type === 'alumni' ? 'inline-block' : 'none';
+            
+            if(type === 'summary') {
+                // Summary Report - Charts
+                chartsContainer.innerHTML = `
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-bar"></i> Jumlah Siswa per Jenjang</h3>
+                        <canvas id="siswaChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-pie"></i> Distribusi Guru per Jenjang</h3>
+                        <canvas id="guruChart"></canvas>
+                    </div>
+                `;
+                
+                // Siswa Chart
+                const siswaByLevel = {
+                    TK: students.filter(s => s.level === 'TK').length,
+                    SD: students.filter(s => s.level === 'SD').length,
+                    SMP: students.filter(s => s.level === 'SMP').length,
+                    SMA: students.filter(s => s.level === 'SMA').length,
+                    Kuliah: students.filter(s => s.level === 'Kuliah').length
+                };
+                
+                setTimeout(() => {
+                    new Chart(document.getElementById('siswaChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: Object.keys(siswaByLevel),
+                            datasets: [{ label: 'Jumlah Siswa', data: Object.values(siswaByLevel), backgroundColor: '#667eea', borderRadius: 8 }]
+                        }
+                    });
+                    
+                    const guruByLevel = {
+                        TK: teachers.filter(t => t.level === 'TK').length,
+                        SD: teachers.filter(t => t.level === 'SD').length,
+                        SMP: teachers.filter(t => t.level === 'SMP').length,
+                        SMA: teachers.filter(t => t.level === 'SMA').length,
+                        Kuliah: teachers.filter(t => t.level === 'Kuliah').length
+                    };
+                    
+                    new Chart(document.getElementById('guruChart'), {
+                        type: 'pie',
+                        data: {
+                            labels: Object.keys(guruByLevel),
+                            datasets: [{ data: Object.values(guruByLevel), backgroundColor: ['#2a5298', '#34a853', '#ea4335', '#fbbc04', '#764ba2'] }]
+                        }
+                    });
+                }, 100);
+                
+                // Summary Table
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-chart-line"></i> Ringkasan Data Yayasan</h3>
+                    <table>
+                        <thead><tr><th>Indikator</th><th>Jumlah</th></tr></thead>
+                        <tbody>
+                            <tr><td>Total Unit Sekolah</td><td><strong>${schools.length}</strong></td></tr>
+                            <tr><td>Total Tenaga Pendidik</td><td><strong>${teachers.length}</strong> (${teachers.filter(t => t.level !== 'Kuliah').length} Guru, ${teachers.filter(t => t.level === 'Kuliah').length} Dosen)</td></tr>
+                            <tr><td>Total Peserta Didik</td><td><strong>${students.length}</strong> (${students.filter(s => s.level !== 'Kuliah').length} Siswa, ${students.filter(s => s.level === 'Kuliah').length} Mahasiswa)</td></tr>
+                            <tr><td>Total Prestasi</td><td><strong>${prestasi.length}</strong></td></tr>
+                            <tr><td>Total Ekstrakurikuler</td><td><strong>${ekskul.length}</strong></td></tr>
+                            <tr><td>Total Fasilitas</td><td><strong>${fasilitas.length}</strong></td></tr>
+                            <tr><td>Total Alumni</td><td><strong>${alumni.length}</strong></td></tr>
+                        </tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'sekolah') {
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Akreditasi Sekolah</h3><canvas id="akreditasiChart"></canvas></div>`;
+                
+                const akreditasiCount = { A: schools.filter(s => s.accreditation === 'A').length, B: schools.filter(s => s.accreditation === 'B').length, C: schools.filter(s => s.accreditation === 'C').length };
+                setTimeout(() => {
+                    new Chart(document.getElementById('akreditasiChart'), {
+                        type: 'bar',
+                        data: { labels: Object.keys(akreditasiCount), datasets: [{ label: 'Jumlah Sekolah', data: Object.values(akreditasiCount), backgroundColor: ['#34a853', '#fbbc04', '#ea4335'] }] }
+                    });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-school"></i> Data Unit Sekolah</h3>
+                    <table>
+                        <thead><tr><th>Nama Sekolah</th><th>Jenjang</th><th>Akreditasi</th><th>Jumlah Guru</th><th>Jumlah Siswa</th></tr></thead>
+                        <tbody>
+                            ${schools.map(s => `<tr><td>${s.name}</td><td>${s.level}</td><td><span class="badge badge-${s.accreditation.toLowerCase()}">${s.accreditation}</span></td><td>${teachers.filter(t => t.level === s.level).length}</td><td>${students.filter(st => st.level === s.level).length}</td></tr>`).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'guru') {
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Distribusi Guru per Jenjang</h3><canvas id="guruDistChart"></canvas></div>`;
+                
+                const guruDist = { TK: teachers.filter(t => t.level === 'TK').length, SD: teachers.filter(t => t.level === 'SD').length, SMP: teachers.filter(t => t.level === 'SMP').length, SMA: teachers.filter(t => t.level === 'SMA').length, Kuliah: teachers.filter(t => t.level === 'Kuliah').length };
+                setTimeout(() => {
+                    new Chart(document.getElementById('guruDistChart'), { type: 'pie', data: { labels: Object.keys(guruDist), datasets: [{ data: Object.values(guruDist), backgroundColor: ['#2a5298', '#34a853', '#ea4335', '#fbbc04', '#764ba2'] }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-chalkboard-user"></i> Data Tenaga Pendidik</h3>
+                    <table>
+                        <thead><tr><th>Nama</th><th>Unit</th><th>Mata Pelajaran</th><th>Jabatan</th></tr></thead>
+                        <tbody>${teachers.map(t => `<tr><td>${t.name}</td><td>${t.level}</td><td>${t.mapel || '-'}</td><td>${t.position || 'Guru'}</td></tr>`).join('')}</tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'siswa') {
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Jumlah Siswa per Jenjang</h3><canvas id="siswaDistChart"></canvas></div>`;
+                
+                const siswaDist = { TK: students.filter(s => s.level === 'TK').length, SD: students.filter(s => s.level === 'SD').length, SMP: students.filter(s => s.level === 'SMP').length, SMA: students.filter(s => s.level === 'SMA').length, Kuliah: students.filter(s => s.level === 'Kuliah').length };
+                setTimeout(() => {
+                    new Chart(document.getElementById('siswaDistChart'), { type: 'bar', data: { labels: Object.keys(siswaDist), datasets: [{ label: 'Jumlah', data: Object.values(siswaDist), backgroundColor: '#667eea' }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-users"></i> Data Peserta Didik</h3>
+                    <table>
+                        <thead><tr><th>Nama</th><th>Unit</th><th>Kelas/Prodi</th><th>Status</th></tr></thead>
+                        <tbody>${students.map(s => `<tr><td>${s.name}</td><td>${s.level}</td><td>${s.class || s.prodi || '-'}</td><td>${s.status || 'Aktif'}</td></tr>`).join('')}</tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'prestasi') {
+                let filteredPrestasi = prestasi;
+                if(yearFilter) filteredPrestasi = prestasi.filter(p => p.year == yearFilter);
+                
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Distribusi Prestasi per Tingkat</h3><canvas id="prestasiChart"></canvas></div>`;
+                
+                const tingkatCount = { Kecamatan: 0, 'Kota/Kabupaten': 0, Provinsi: 0, Nasional: 0, Internasional: 0 };
+                filteredPrestasi.forEach(p => { if(tingkatCount[p.tingkat] !== undefined) tingkatCount[p.tingkat]++; });
+                setTimeout(() => {
+                    new Chart(document.getElementById('prestasiChart'), { type: 'pie', data: { labels: Object.keys(tingkatCount), datasets: [{ data: Object.values(tingkatCount), backgroundColor: ['#2a5298', '#34a853', '#ea4335', '#fbbc04', '#764ba2'] }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-trophy"></i> Data Prestasi ${yearFilter ? `Tahun ${yearFilter}` : ''}</h3>
+                    <table>
+                        <thead><tr><th>Nama Prestasi</th><th>Pemenang</th><th>Unit</th><th>Tingkat</th><th>Tahun</th></tr></thead>
+                        <tbody>${filteredPrestasi.map(p => `<tr><td>${p.name}</td><td>${p.winner}</td><td>${p.level}</td><td>${p.tingkat}</td><td>${p.year}</td></tr>`).join('')}</tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'ekskul') {
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Jumlah Ekskul per Unit</h3><canvas id="ekskulChart"></canvas></div>`;
+                
+                const ekskulDist = { TK: ekskul.filter(e => e.level === 'TK').length, SD: ekskul.filter(e => e.level === 'SD').length, SMP: ekskul.filter(e => e.level === 'SMP').length, SMA: ekskul.filter(e => e.level === 'SMA').length, Universitas: ekskul.filter(e => e.level === 'Universitas').length, Umum: ekskul.filter(e => e.level === 'Umum').length };
+                setTimeout(() => {
+                    new Chart(document.getElementById('ekskulChart'), { type: 'bar', data: { labels: Object.keys(ekskulDist), datasets: [{ label: 'Jumlah Ekskul', data: Object.values(ekskulDist), backgroundColor: '#fbbc04' }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-futbol"></i> Data Ekstrakurikuler</h3>
+                    <table>
+                        <thead><tr><th>Nama Ekskul</th><th>Unit</th><th>Pembina</th><th>Jadwal</th></tr></thead>
+                        <tbody>${ekskul.map(e => `<tr><td>${e.name}</td><td>${e.level}</td><td>${e.coach}</td><td>${e.schedule || '-'}</td></tr>`).join('')}</tbody>
+                    </table>
+                `;
+            }
+            else if(type === 'fasilitas') {
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Distribusi Fasilitas per Kategori</h3><canvas id="fasilitasChart"></canvas></div>`;
+                
+                const kategoriCount = { Laboratorium: 0, Olahraga: 0, Perpustakaan: 0, 'Ruang Kelas': 0, Aula: 0, Ibadah: 0, Lainnya: 0 };
+                fasilitas.forEach(f => { if(kategoriCount[f.kategori] !== undefined) kategoriCount[f.kategori]++; });
+                setTimeout(() => {
+                    new Chart(document.getElementById('fasilitasChart'), { type: 'pie', data: { labels: Object.keys(kategoriCount), datasets: [{ data: Object.values(kategoriCount), backgroundColor: ['#2a5298', '#34a853', '#ea4335', '#fbbc04', '#764ba2', '#667eea', '#94a3b8'] }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-building"></i> Data Fasilitas</h3>
+                    <table><thead><tr><th>Nama Fasilitas</th><th>Unit</th><th>Kategori</th><th>Kapasitas</th></tr></thead>
+                    <tbody>${fasilitas.map(f => `<tr><td>${f.name}</td><td>${f.level}</td><td>${f.kategori}</td><td>${f.capacity || '-'}</td></tr>`).join('')}</tbody></table>
+                `;
+            }
+            else if(type === 'alumni') {
+                let filteredAlumni = alumni;
+                if(yearFilter) filteredAlumni = alumni.filter(a => a.year == yearFilter);
+                
+                chartsContainer.innerHTML = `<div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Jumlah Alumni per Tahun</h3><canvas id="alumniChart"></canvas></div>`;
+                
+                const yearCount = {};
+                filteredAlumni.forEach(a => { yearCount[a.year] = (yearCount[a.year] || 0) + 1; });
+                setTimeout(() => {
+                    new Chart(document.getElementById('alumniChart'), { type: 'bar', data: { labels: Object.keys(yearCount), datasets: [{ label: 'Jumlah Alumni', data: Object.values(yearCount), backgroundColor: '#764ba2' }] } });
+                }, 100);
+                
+                tableContainer.innerHTML = `
+                    <h3><i class="fas fa-user-graduate"></i> Data Alumni</h3>
+                    <table><thead><tr><th>Nama</th><th>Unit</th><th>Tahun Lulus</th><th>Pekerjaan</th></tr></thead>
+                    <tbody>${filteredAlumni.map(a => `<tr><td>${a.name}</td><td>${a.level}</td><td>${a.year}</td><td>${a.job || '-'}</td></tr>`).join('')}</tbody></table>
+                `;
+            }
+        }
+
+        // Export to Excel (CSV)
+        document.getElementById('exportExcelBtn').onclick = () => {
+            const type = document.getElementById('filterReport').value;
+            let headers = [], data = [];
+            
+            const typeMap = {
+                summary: ['Total Unit Sekolah', schools.length],
+                sekolah: ['Nama Sekolah', 'Jenjang', 'Akreditasi', 'Jumlah Guru', 'Jumlah Siswa'],
+                guru: ['Nama', 'Unit', 'Mata Pelajaran', 'Jabatan'],
+                siswa: ['Nama', 'Unit', 'Kelas/Prodi', 'Status'],
+                prestasi: ['Nama Prestasi', 'Pemenang', 'Unit', 'Tingkat', 'Tahun'],
+                ekskul: ['Nama Ekskul', 'Unit', 'Pembina', 'Jadwal'],
+                fasilitas: ['Nama Fasilitas', 'Unit', 'Kategori', 'Kapasitas'],
+                alumni: ['Nama', 'Unit', 'Tahun Lulus', 'Pekerjaan']
+            };
+            
+            if(type === 'summary') {
+                let csv = 'Indikator,Jumlah\n';
+                csv += `Total Unit Sekolah,${schools.length}\n`;
+                csv += `Total Tenaga Pendidik,${teachers.length}\n`;
+                csv += `Total Peserta Didik,${students.length}\n`;
+                csv += `Total Prestasi,${prestasi.length}\n`;
+                csv += `Total Ekstrakurikuler,${ekskul.length}\n`;
+                csv += `Total Fasilitas,${fasilitas.length}\n`;
+                csv += `Total Alumni,${alumni.length}\n`;
+                downloadCSV(csv, `laporan_${type}_${new Date().toISOString().split('T')[0]}.csv`);
+                return;
+            }
+            
+            let csv = typeMap[type].join(',') + '\n';
+            if(type === 'sekolah') {
+                schools.forEach(s => { csv += `"${s.name}",${s.level},${s.accreditation},${teachers.filter(t => t.level === s.level).length},${students.filter(st => st.level === s.level).length}\n`; });
+            } else if(type === 'guru') {
+                teachers.forEach(t => { csv += `"${t.name}",${t.level},${t.mapel || '-'},${t.position || 'Guru'}\n`; });
+            } else if(type === 'siswa') {
+                students.forEach(s => { csv += `"${s.name}",${s.level},${s.class || s.prodi || '-'},${s.status || 'Aktif'}\n`; });
+            } else if(type === 'prestasi') {
+                prestasi.forEach(p => { csv += `"${p.name}","${p.winner}",${p.level},${p.tingkat},${p.year}\n`; });
+            } else if(type === 'ekskul') {
+                ekskul.forEach(e => { csv += `"${e.name}",${e.level},"${e.coach}",${e.schedule || '-'}\n`; });
+            } else if(type === 'fasilitas') {
+                fasilitas.forEach(f => { csv += `"${f.name}",${f.level},${f.kategori},${f.capacity || '-'}\n`; });
+            } else if(type === 'alumni') {
+                alumni.forEach(a => { csv += `"${a.name}",${a.level},${a.year},${a.job || '-'}\n`; });
+            }
+            
+            downloadCSV(csv, `laporan_${type}_${new Date().toISOString().split('T')[0]}.csv`);
+        };
+        
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+
+        // Print
+        document.getElementById('printBtn').onclick = () => { window.print(); };
+        
+        // PDF
+        document.getElementById('exportPdfBtn').onclick = () => {
+            alert('📄 Untuk export PDF, gunakan menu Print > Save as PDF');
+            window.print();
+        };
+
+        document.getElementById('filterReport').addEventListener('change', renderReport);
+        document.getElementById('filterYear').addEventListener('change', renderReport);
+        
+        renderReport();
+        updateStats();
+
+        // ==================== NAVIGASI STANDAR ====================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                const pages = {
+                    dashboard: 'dashboard.html',
+                    profil: 'profil-yayasan.html',
+                    struktur: 'struktur-organisasi.html',
+                    sekolah: 'data-sekolah.html',
+                    guru: 'data-guru.html',
+                    siswa: 'data-siswa.html',
+                    ekskul: 'ekstrakurikuler.html',
+                    prestasi: 'prestasi.html',
+                    fasilitas: 'fasilitas.html',
+                    galeri: 'galeri.html',
+                    pengumuman: 'pengumuman.html',
+                    alumni: 'alumni.html',
+                    berita: 'berita.html',
+                    kontak: 'kontak.html',
+                    laporan: 'laporan.html'
+                };
+                if(pages[page]) window.location.href = pages[page];
+            });
+        });
+
+        document.getElementById('logoutBtn').onclick = () => {
+            if(confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = '../index.html';
+            }
+        };
+
+        document.getElementById('menuToggle').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+    </script>
+</body>
+</html>

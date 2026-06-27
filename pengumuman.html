@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontak - YP Nusantara Sejahtera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* ==================== SIDEBAR STANDAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a2a4f 0%, #0f1a2e 100%);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon-small {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .sidebar-header p {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            margin: 4px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 22px;
+            font-size: 16px;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #1a2a4f;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                left: -280px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+        /* ==================== END SIDEBAR ==================== */
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px 32px;
+            transition: all 0.3s;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .page-title p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .stat-info p {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        /* Kontak Grid */
+        .kontak-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .kontak-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+        }
+
+        .kontak-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1);
+        }
+
+        .kontak-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .kontak-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2a4f;
+            margin-bottom: 8px;
+        }
+
+        .kontak-value {
+            font-size: 13px;
+            color: #475569;
+            word-break: break-word;
+        }
+
+        .kontak-value a {
+            color: #475569;
+            text-decoration: none;
+        }
+
+        .kontak-value a:hover {
+            color: #667eea;
+        }
+
+        /* Maps & Form Section */
+        .maps-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #f0f2f5;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a2a4f;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h3 i {
+            color: #667eea;
+        }
+
+        /* Maps Placeholder */
+        .maps-placeholder {
+            background: #e8f0fe;
+            height: 280px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #2a5298;
+            text-align: center;
+        }
+
+        .maps-placeholder i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+
+        .maps-placeholder p {
+            font-size: 13px;
+        }
+
+        .maps-placeholder small {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 8px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #334155;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        /* Social Media */
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a2a4f;
+            font-size: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Jam Operasional */
+        .jam-operasional {
+            margin-top: 16px;
+        }
+
+        .jam-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        .jam-item:last-child {
+            border-bottom: none;
+        }
+
+        .jam-day {
+            font-weight: 600;
+            color: #1a2a4f;
+        }
+
+        .jam-time {
+            color: #475569;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .maps-form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon-small">
+                <i class="fas fa-landmark" style="font-size: 24px;"></i>
+            </div>
+            <h2>YP Nusantara Sejahtera</h2>
+            <p>Admin Panel Yayasan</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
+            <div class="nav-item" data-page="profil"><i class="fas fa-building"></i><span>Profil Yayasan</span></div>
+            <div class="nav-item" data-page="struktur"><i class="fas fa-sitemap"></i><span>Struktur Organisasi</span></div>
+            <div class="nav-item" data-page="sekolah"><i class="fas fa-school"></i><span>Kelola Sekolah</span></div>
+            <div class="nav-item" data-page="guru"><i class="fas fa-chalkboard-user"></i><span>Data Guru & Dosen</span></div>
+            <div class="nav-item" data-page="siswa"><i class="fas fa-users"></i><span>Data Siswa</span></div>
+            <div class="nav-item" data-page="ekskul"><i class="fas fa-futbol"></i><span>Ekstrakurikuler</span></div>
+            <div class="nav-item" data-page="prestasi"><i class="fas fa-trophy"></i><span>Prestasi</span></div>
+            <div class="nav-item" data-page="fasilitas"><i class="fas fa-building"></i><span>Fasilitas</span></div>
+            <div class="nav-item" data-page="galeri"><i class="fas fa-images"></i><span>Galeri</span></div>
+            <div class="nav-item" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span></div>
+            <div class="nav-item" data-page="alumni"><i class="fas fa-user-graduate"></i><span>Alumni</span></div>
+            <div class="nav-item" data-page="berita"><i class="fas fa-newspaper"></i><span>Berita & Artikel</span></div>
+            <div class="nav-item active" data-page="kontak"><i class="fas fa-phone"></i><span>Kontak</span></div>
+            <div class="nav-item" data-page="laporan"><i class="fas fa-file-excel"></i><span>Laporan</span></div>
+            <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="page-title">
+                <h1>📞 Kontak & Informasi</h1>
+                <p>Kelola kontak, alamat, dan media sosial yayasan</p>
+            </div>
+            <button class="btn-save" id="saveKontakBtn">
+                <i class="fas fa-save"></i> Simpan Perubahan
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Kontak Cards -->
+        <div class="kontak-grid">
+            <div class="kontak-card">
+                <div class="kontak-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="kontak-title">Telepon</div>
+                <div class="kontak-value"><input type="text" id="phone" style="border:none; background:transparent; text-align:center; width:100%; font-family:monospace;" value="(021) 12345678"></div>
+            </div>
+            <div class="kontak-card">
+                <div class="kontak-icon"><i class="fas fa-envelope"></i></div>
+                <div class="kontak-title">Email</div>
+                <div class="kontak-value"><input type="email" id="email" style="border:none; background:transparent; text-align:center; width:100%;" value="info@nusantara.sch.id"></div>
+            </div>
+            <div class="kontak-card">
+                <div class="kontak-icon"><i class="fab fa-whatsapp"></i></div>
+                <div class="kontak-title">WhatsApp</div>
+                <div class="kontak-value"><input type="text" id="wa" style="border:none; background:transparent; text-align:center; width:100%;" value="+62 812-3456-7890"></div>
+            </div>
+            <div class="kontak-card">
+                <div class="kontak-icon"><i class="fas fa-globe"></i></div>
+                <div class="kontak-title">Website</div>
+                <div class="kontak-value"><input type="text" id="website" style="border:none; background:transparent; text-align:center; width:100%;" value="www.nusantara.sch.id"></div>
+            </div>
+        </div>
+
+        <!-- Maps & Form -->
+        <div class="maps-form-grid">
+            <!-- Maps -->
+            <div class="card">
+                <h3><i class="fas fa-map-marker-alt"></i> Lokasi Yayasan</h3>
+                <div class="form-group">
+                    <label>Alamat Lengkap</label>
+                    <input type="text" id="address" placeholder="Alamat lengkap yayasan" value="Jl. Pendidikan No.123, Kel. Cendana, Kec. Menteng, Jakarta Pusat 10310">
+                </div>
+                <div class="maps-placeholder" id="mapsPlaceholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <p>📍 Google Maps akan tampil di sini</p>
+                    <small>Masukkan alamat lengkap di atas</small>
+                </div>
+            </div>
+
+            <!-- Jam Operasional -->
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Jam Operasional</h3>
+                <div class="jam-operasional" id="jamOperasional">
+                    <div class="jam-item"><span class="jam-day">Senin - Jumat</span><span class="jam-time">07:30 - 16:30</span></div>
+                    <div class="jam-item"><span class="jam-day">Sabtu</span><span class="jam-time">08:00 - 14:00</span></div>
+                    <div class="jam-item"><span class="jam-day">Minggu & Hari Libur</span><span class="jam-time">Tutup</span></div>
+                </div>
+                <textarea id="operationalHours" style="display:none;">Senin - Jumat: 07:30 - 16:30
+Sabtu: 08:00 - 14:00
+Minggu & Hari Libur Nasional: Tutup</textarea>
+                
+                <h3 style="margin-top: 24px;"><i class="fas fa-share-alt"></i> Media Sosial</h3>
+                <div class="social-grid" id="socialGrid">
+                    <a href="#" class="social-icon" id="facebookLink"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" id="instagramLink"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon" id="youtubeLink"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon" id="twitterLink"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" id="linkedinLink"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label>Link Media Sosial (pisahkan dengan koma)</label>
+                    <input type="text" id="socialLinks" placeholder="facebook_url,instagram_url,youtube_url" value="https://facebook.com/ypnusantara,https://instagram.com/ypnusantara,https://youtube.com/ypnusantara">
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Kontak -->
+        <div class="card">
+            <h3><i class="fas fa-paper-plane"></i> Kirim Pesan (Demo)</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" id="contactName" placeholder="Nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="contactEmail" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Subjek</label>
+                <input type="text" id="contactSubject" placeholder="Subjek pesan">
+            </div>
+            <div class="form-group">
+                <label>Pesan</label>
+                <textarea id="contactMessage" placeholder="Tulis pesan Anda di sini..."></textarea>
+            </div>
+            <button class="btn-send" id="sendMessageBtn">
+                <i class="fas fa-paper-plane"></i> Kirim Pesan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        if(!localStorage.getItem('isLoggedIn')) window.location.href = '../index.html';
+
+        // Load data kontak
+        function loadKontak() {
+            const kontak = JSON.parse(localStorage.getItem('kontakYayasan')) || {
+                phone: '(021) 12345678',
+                email: 'info@nusantara.sch.id',
+                website: 'www.nusantara.sch.id',
+                wa: '+62 812-3456-7890',
+                address: 'Jl. Pendidikan No.123, Kel. Cendana, Kec. Menteng, Jakarta Pusat 10310',
+                operationalHours: 'Senin - Jumat: 07:30 - 16:30\nSabtu: 08:00 - 14:00\nMinggu & Hari Libur Nasional: Tutup',
+                socialLinks: 'https://facebook.com/ypnusantara,https://instagram.com/ypnusantara,https://youtube.com/ypnusantara'
+            };
+            
+            document.getElementById('phone').value = kontak.phone;
+            document.getElementById('email').value = kontak.email;
+            document.getElementById('website').value = kontak.website;
+            document.getElementById('wa').value = kontak.wa;
+            document.getElementById('address').value = kontak.address;
+            document.getElementById('socialLinks').value = kontak.socialLinks;
+            
+            // Parse jam operasional
+            const jamLines = kontak.operationalHours.split('\n');
+            let jamHtml = '';
+            jamLines.forEach(line => {
+                const parts = line.split(':');
+                if(parts.length >= 2) {
+                    jamHtml += `<div class="jam-item"><span class="jam-day">${parts[0]}</span><span class="jam-time">${parts.slice(1).join(':')}</span></div>`;
+                }
+            });
+            document.getElementById('jamOperasional').innerHTML = jamHtml;
+            document.getElementById('operationalHours').value = kontak.operationalHours;
+            
+            // Parse social links
+            const socialLinks = kontak.socialLinks.split(',');
+            if(socialLinks[0]) document.getElementById('facebookLink').href = socialLinks[0];
+            if(socialLinks[1]) document.getElementById('instagramLink').href = socialLinks[1];
+            if(socialLinks[2]) document.getElementById('youtubeLink').href = socialLinks[2];
+            if(socialLinks[3]) document.getElementById('twitterLink').href = socialLinks[3];
+            if(socialLinks[4]) document.getElementById('linkedinLink').href = socialLinks[4];
+        }
+
+        // Update stats
+        function updateStats() {
+            const kontak = JSON.parse(localStorage.getItem('kontakYayasan')) || {};
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#e0e7ff;"><i class="fas fa-phone-alt" style="color:#4338ca; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>📞</h3><p>Telepon Aktif</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#dcfce7;"><i class="fas fa-envelope" style="color:#166534; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>✉️</h3><p>Email Terhubung</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fef3c7;"><i class="fab fa-whatsapp" style="color:#92400e; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>💬</h3><p>WhatsApp Aktif</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f3e8ff;"><i class="fas fa-clock" style="color:#6b21a5; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>⏰</h3><p>Jam Operasional</p></div>
+                </div>
+            `;
+            document.getElementById('statsGrid').innerHTML = statsHtml;
+        }
+
+        // Save kontak
+        document.getElementById('saveKontakBtn').onclick = () => {
+            const operationalHours = document.getElementById('operationalHours').value;
+            const jamLines = operationalHours.split('\n');
+            let jamHtml = '';
+            jamLines.forEach(line => {
+                const parts = line.split(':');
+                if(parts.length >= 2) {
+                    jamHtml += `<div class="jam-item"><span class="jam-day">${parts[0]}</span><span class="jam-time">${parts.slice(1).join(':')}</span></div>`;
+                }
+            });
+            document.getElementById('jamOperasional').innerHTML = jamHtml;
+            
+            const kontak = {
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                website: document.getElementById('website').value,
+                wa: document.getElementById('wa').value,
+                address: document.getElementById('address').value,
+                operationalHours: operationalHours,
+                socialLinks: document.getElementById('socialLinks').value
+            };
+            
+            // Update social links
+            const socialLinks = kontak.socialLinks.split(',');
+            if(socialLinks[0]) document.getElementById('facebookLink').href = socialLinks[0];
+            if(socialLinks[1]) document.getElementById('instagramLink').href = socialLinks[1];
+            if(socialLinks[2]) document.getElementById('youtubeLink').href = socialLinks[2];
+            if(socialLinks[3]) document.getElementById('twitterLink').href = socialLinks[3];
+            if(socialLinks[4]) document.getElementById('linkedinLink').href = socialLinks[4];
+            
+            localStorage.setItem('kontakYayasan', JSON.stringify(kontak));
+            alert('✅ Kontak berhasil disimpan!');
+            updateStats();
+        };
+
+        // Send message (demo)
+        document.getElementById('sendMessageBtn').onclick = () => {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            if(!name || !email || !subject || !message) {
+                alert('⚠️ Harap lengkapi semua field!');
+                return;
+            }
+            
+            alert(`📧 Pesan terkirim!\n\nDari: ${name} (${email})\nSubjek: ${subject}\nPesan: ${message}\n\n📌 Demo: Pesan akan diproses admin.`);
+            
+            // Clear form
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactSubject').value = '';
+            document.getElementById('contactMessage').value = '';
+        };
+
+        // Update maps placeholder based on address
+        document.getElementById('address').addEventListener('change', function() {
+            const address = this.value;
+            const mapsDiv = document.getElementById('mapsPlaceholder');
+            mapsDiv.innerHTML = `
+                <i class="fas fa-map-marked-alt"></i>
+                <p>📍 ${address}</p>
+                <small>Klik "Simpan Perubahan" untuk menyimpan alamat</small>
+            `;
+        });
+
+        loadKontak();
+        updateStats();
+
+        // ==================== NAVIGASI STANDAR ====================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                const pages = {
+                    dashboard: 'dashboard.html',
+                    profil: 'profil-yayasan.html',
+                    struktur: 'struktur-organisasi.html',
+                    sekolah: 'data-sekolah.html',
+                    guru: 'data-guru.html',
+                    siswa: 'data-siswa.html',
+                    ekskul: 'ekstrakurikuler.html',
+                    prestasi: 'prestasi.html',
+                    fasilitas: 'fasilitas.html',
+                    galeri: 'galeri.html',
+                    pengumuman: 'pengumuman.html',
+                    alumni: 'alumni.html',
+                    berita: 'berita.html',
+                    kontak: 'kontak.html',
+                    laporan: 'laporan.html'
+                };
+                if(pages[page]) window.location.href = pages[page];
+            });
+        });
+
+        document.getElementById('logoutBtn').onclick = () => {
+            if(confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = '../index.html';
+            }
+        };
+
+        document.getElementById('menuToggle').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni - YP Nusantara Sejahtera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* ==================== SIDEBAR STANDAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a2a4f 0%, #0f1a2e 100%);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon-small {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .sidebar-header p {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            margin: 4px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .nav-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 22px;
+            font-size: 16px;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: #1a2a4f;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                left: -280px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+        /* ==================== END SIDEBAR ==================== */
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 24px 32px;
+            transition: all 0.3s;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .page-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .page-title p {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        /* Stats Cards - Lebih Kecil */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-info h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .stat-info p {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        /* Filter Section - Lebih Rapat */
+        .filter-section {
+            background: white;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select, .search-input {
+            padding: 8px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .search-input {
+            width: 220px;
+        }
+
+        /* Alumni Grid - BANYAK KOLOM (6 kolom di desktop) */
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        /* Desktop besar - 6 kolom */
+        @media (min-width: 1600px) {
+            .alumni-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        /* Desktop sedang - 5 kolom */
+        @media (min-width: 1300px) and (max-width: 1599px) {
+            .alumni-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* Desktop kecil - 4 kolom */
+        @media (min-width: 1000px) and (max-width: 1299px) {
+            .alumni-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Tablet - 3 kolom */
+        @media (min-width: 700px) and (max-width: 999px) {
+            .alumni-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile - 2 kolom */
+        @media (min-width: 450px) and (max-width: 699px) {
+            .alumni-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile kecil - 1 kolom */
+        @media (max-width: 449px) {
+            .alumni-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Alumni Card - LEBIH KECIL */
+        .alumni-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid #f0f2f5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.12);
+        }
+
+        /* Header Card - Lebih kecil */
+        .alumni-header {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 12px 40px 12px;
+            text-align: center;
+        }
+
+        .alumni-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #667eea;
+        }
+
+        .alumni-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 10px;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alumni-year-badge {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        /* Body Card - Lebih kecil */
+        .alumni-body {
+            padding: 14px 12px 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .alumni-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        .alumni-info-item i {
+            width: 14px;
+            font-size: 11px;
+            color: #667eea;
+        }
+
+        .alumni-level-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        /* Testimoni - Lebih kecil */
+        .alumni-testimoni {
+            background: #f8fafc;
+            padding: 8px 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.4;
+            font-style: italic;
+            position: relative;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .alumni-testimoni::before {
+            content: '"';
+            font-size: 20px;
+            color: #667eea;
+            opacity: 0.3;
+            position: absolute;
+            top: 2px;
+            left: 6px;
+        }
+
+        /* Actions - Lebih kecil */
+        .alumni-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn-view { background: #e0e7ff; color: #4338ca; }
+        .btn-view:hover { background: #c7d2fe; }
+
+        .btn-edit { background: #fef3c7; color: #92400e; }
+        .btn-edit:hover { background: #fde68a; }
+
+        .btn-delete { background: #fee2e2; color: #b91c1c; }
+        .btn-delete:hover { background: #fecaca; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a2a4f;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #334155;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .image-preview {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 8px;
+            border: 2px solid #667eea;
+            display: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon-small">
+                <i class="fas fa-landmark" style="font-size: 24px;"></i>
+            </div>
+            <h2>YP Nusantara Sejahtera</h2>
+            <p>Admin Panel Yayasan</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
+            <div class="nav-item" data-page="profil"><i class="fas fa-building"></i><span>Profil Yayasan</span></div>
+            <div class="nav-item" data-page="struktur"><i class="fas fa-sitemap"></i><span>Struktur Organisasi</span></div>
+            <div class="nav-item" data-page="sekolah"><i class="fas fa-school"></i><span>Kelola Sekolah</span></div>
+            <div class="nav-item" data-page="guru"><i class="fas fa-chalkboard-user"></i><span>Data Guru & Dosen</span></div>
+            <div class="nav-item" data-page="siswa"><i class="fas fa-users"></i><span>Data Siswa</span></div>
+            <div class="nav-item" data-page="ekskul"><i class="fas fa-futbol"></i><span>Ekstrakurikuler</span></div>
+            <div class="nav-item" data-page="prestasi"><i class="fas fa-trophy"></i><span>Prestasi</span></div>
+            <div class="nav-item" data-page="fasilitas"><i class="fas fa-building"></i><span>Fasilitas</span></div>
+            <div class="nav-item" data-page="galeri"><i class="fas fa-images"></i><span>Galeri</span></div>
+            <div class="nav-item" data-page="pengumuman"><i class="fas fa-bullhorn"></i><span>Pengumuman</span></div>
+            <div class="nav-item active" data-page="alumni"><i class="fas fa-user-graduate"></i><span>Alumni</span></div>
+            <div class="nav-item" data-page="berita"><i class="fas fa-newspaper"></i><span>Berita & Artikel</span></div>
+            <div class="nav-item" data-page="kontak"><i class="fas fa-phone"></i><span>Kontak</span></div>
+            <div class="nav-item" data-page="laporan"><i class="fas fa-file-excel"></i><span>Laporan</span></div>
+            <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="page-title">
+                <h1>🎓 Alumni & Testimoni</h1>
+                <p>Kelola data alumni dan testimoni lulusan yayasan</p>
+            </div>
+            <button class="btn-add" id="openModalBtn">
+                <i class="fas fa-plus"></i> Tambah Alumni
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <select class="filter-select" id="filterLevel">
+                    <option value="">📌 Semua Unit</option>
+                    <option value="TK">🏫 TK Nusantara Ceria</option>
+                    <option value="SD">📚 SD Nusantara Unggul</option>
+                    <option value="SMP">📖 SMP Nusantara Gemilang</option>
+                    <option value="SMA">🎓 SMA Nusantara Prestasi</option>
+                    <option value="Universitas">🏛️ Universitas Nusantara Digital</option>
+                </select>
+                <select class="filter-select" id="filterYear">
+                    <option value="">📅 Semua Tahun</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cari alumni...">
+            </div>
+        </div>
+
+        <!-- Alumni Grid -->
+        <div class="alumni-grid" id="alumniGrid"></div>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal" id="alumniModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-user-graduate"></i> Tambah Alumni</h2>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <input type="hidden" id="editId">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="alumniName" placeholder="Nama alumni">
+                </div>
+                <div class="form-group">
+                    <label>Tahun Lulus</label>
+                    <input type="number" id="alumniYear" value="2024">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Unit Pendidikan</label>
+                    <select id="alumniLevel">
+                        <option value="TK">🏫 TK Nusantara Ceria</option>
+                        <option value="SD">📚 SD Nusantara Unggul</option>
+                        <option value="SMP">📖 SMP Nusantara Gemilang</option>
+                        <option value="SMA">🎓 SMA Nusantara Prestasi</option>
+                        <option value="Universitas">🏛️ Universitas Nusantara Digital</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pekerjaan / Studi</label>
+                    <input type="text" id="alumniJob" placeholder="Contoh: Software Engineer">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Testimoni</label>
+                <textarea id="alumniTestimoni" placeholder="Tulis testimoni..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Foto Profil</label>
+                <input type="file" id="alumniPhoto" accept="image/*">
+                <img id="imagePreview" class="image-preview">
+                <small style="color:#999;">Format JPG/PNG</small>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-submit" id="saveBtn">Simpan</button>
+                <button class="btn-cancel" id="cancelModalBtn">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if(!localStorage.getItem('isLoggedIn')) window.location.href = '../index.html';
+
+        let alumni = JSON.parse(localStorage.getItem('alumni')) || [
+            {id:1, name:'Dr. Ahmad Fauzi', level:'SMA', year:2005, job:'Dosen Universitas', testimoni:'Terima kasih SMA Nusantara Prestasi.', photo:''},
+            {id:2, name:'Siti Nurhaliza', level:'Universitas', year:2022, job:'Analis Keuangan', testimoni:'Kampus yang memberikan bekal ilmu.', photo:''},
+            {id:3, name:'Budi Santoso', level:'SMP', year:2010, job:'Software Engineer', testimoni:'SMP mengajarkan disiplin.', photo:''},
+            {id:4, name:'Dewi Anggraeni', level:'SD', year:2008, job:'Guru SD', testimoni:'SD Nusantara tempat menyenangkan.', photo:''},
+            {id:5, name:'Fathia Zahra', level:'SMA', year:2024, job:'Mahasiswa UI', testimoni:'Bimbingan dan dukungan sangat berkesan.', photo:''},
+            {id:6, name:'Rizky Ramadhan', level:'Universitas', year:2023, job:'Full Stack Dev', testimoni:'Skill yang siap pakai di industri.', photo:''},
+            {id:7, name:'Sarah Azzahra', level:'SMA', year:2023, job:'Mahasiswa Kedokteran', testimoni:'Terima kasih guru-guru terbaik.', photo:''},
+            {id:8, name:'M. Iqbal', level:'SMP', year:2018, job:'Pengusaha', testimoni:'Mengajarkan jiwa kepemimpinan.', photo:''},
+            {id:9, name:'Nadia Putri', level:'Universitas', year:2024, job:'Data Scientist', testimoni:'Ilmu statistika sangat bermanfaat.', photo:''},
+            {id:10, name:'Andre Wijaya', level:'SMA', year:2022, job:'UI/UX Designer', testimoni:'Terima kasih atas kreativitasnya.', photo:''},
+            {id:11, name:'Cynthia Dewi', level:'SD', year:2015, job:'Dokter', testimoni:'Dasar pendidikan yang kuat.', photo:''},
+            {id:12, name:'Bayu Saputra', level:'SMP', year:2016, job:'Polisi', testimoni:'Membentuk karakter yang baik.', photo:''},
+        ];
+
+        function saveToLocalStorage() { localStorage.setItem('alumni', JSON.stringify(alumni)); }
+
+        function getUnitIcon(level) {
+            const map = {TK:'🏫', SD:'📚', SMP:'📖', SMA:'🎓', Universitas:'🏛️'};
+            return map[level] || '🎓';
+        }
+
+        function updateStats() {
+            const total = alumni.length;
+            const byLevel = {TK:0, SD:0, SMP:0, SMA:0, Universitas:0};
+            
+            alumni.forEach(a => { 
+                if(byLevel[a.level] !== undefined) byLevel[a.level]++; 
+            });
+            
+            const latestYear = Math.max(...alumni.map(a => a.year));
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#e0e7ff;"><i class="fas fa-user-graduate" style="color:#4338ca; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${total}</h3><p>Total Alumni</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#dcfce7;"><i class="fas fa-graduation-cap" style="color:#166534; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${byLevel.SMA + byLevel.Universitas}</h3><p>Lulusan Akhir</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fef3c7;"><i class="fas fa-calendar" style="color:#92400e; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${latestYear}</h3><p>Tahun Terbaru</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f3e8ff;"><i class="fas fa-building" style="color:#6b21a5; font-size:18px;"></i></div>
+                    <div class="stat-info"><h3>${byLevel.Universitas}</h3><p>Alumni Univ</p></div>
+                </div>
+            `;
+        }
+
+        document.getElementById('alumniPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('imagePreview').src = event.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function renderAlumni() {
+            const filterLevel = document.getElementById('filterLevel').value;
+            const filterYear = document.getElementById('filterYear').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = alumni;
+            if(filterLevel) filtered = filtered.filter(a => a.level === filterLevel);
+            if(filterYear) filtered = filtered.filter(a => a.year == filterYear);
+            if(searchTerm) filtered = filtered.filter(a => a.name.toLowerCase().includes(searchTerm) || a.job.toLowerCase().includes(searchTerm));
+            
+            const container = document.getElementById('alumniGrid');
+            
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-graduate"></i><br>Tidak ada data alumni</div>`;
+                updateStats();
+                return;
+            }
+            
+            container.innerHTML = filtered.map(a => `
+                <div class="alumni-card">
+                    <div class="alumni-header">
+                        ${a.photo ? 
+                            `<img src="${a.photo}" class="alumni-avatar" style="object-fit:cover;">` : 
+                            `<div class="alumni-avatar"><i class="fas fa-user-graduate fa-2x"></i></div>`
+                        }
+                        <div class="alumni-name" title="${a.name}">${a.name.length > 20 ? a.name.substring(0, 18) + '...' : a.name}</div>
+                        <div class="alumni-year-badge">🎓 ${a.year}</div>
+                    </div>
+                    <div class="alumni-body">
+                        <div class="alumni-info-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span class="alumni-level-badge">${getUnitIcon(a.level)} ${a.level}</span>
+                        </div>
+                        <div class="alumni-info-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span title="${a.job}">${a.job.length > 25 ? a.job.substring(0, 22) + '...' : a.job}</span>
+                        </div>
+                        <div class="alumni-testimoni" title="${a.testimoni}">
+                            ${a.testimoni.length > 60 ? a.testimoni.substring(0, 57) + '...' : a.testimoni}
+                        </div>
+                        <div class="alumni-actions">
+                            <button class="action-btn btn-view" onclick="viewAlumni(${a.id})"><i class="fas fa-eye"></i> Lihat</button>
+                            <button class="action-btn btn-edit" onclick="editAlumni(${a.id})"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="action-btn btn-delete" onclick="deleteAlumni(${a.id})"><i class="fas fa-trash"></i> Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            updateStats();
+        }
+
+        window.viewAlumni = (id) => {
+            const item = alumni.find(a => a.id === id);
+            if(item) {
+                alert(`🎓 DETAIL ALUMNI\n\nNama: ${item.name}\nTahun: ${item.year}\nUnit: ${item.level}\nPekerjaan: ${item.job}\n\nTestimoni:\n"${item.testimoni}"`);
+            }
+        };
+
+        const modal = document.getElementById('alumniModal');
+        document.getElementById('openModalBtn').onclick = () => {
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> Tambah Alumni';
+            document.getElementById('editId').value = '';
+            document.getElementById('alumniName').value = '';
+            document.getElementById('alumniYear').value = '2024';
+            document.getElementById('alumniLevel').value = 'SMA';
+            document.getElementById('alumniJob').value = '';
+            document.getElementById('alumniTestimoni').value = '';
+            document.getElementById('alumniPhoto').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            modal.style.display = 'flex';
+        };
+
+        document.getElementById('closeModalBtn').onclick = () => modal.style.display = 'none';
+        document.getElementById('cancelModalBtn').onclick = () => modal.style.display = 'none';
+
+        document.getElementById('saveBtn').onclick = () => {
+            const id = document.getElementById('editId').value;
+            const name = document.getElementById('alumniName').value;
+            const year = parseInt(document.getElementById('alumniYear').value);
+            const level = document.getElementById('alumniLevel').value;
+            const job = document.getElementById('alumniJob').value;
+            const testimoni = document.getElementById('alumniTestimoni').value;
+            const photo = document.getElementById('imagePreview').src;
+
+            if(!name || !job) return alert('⚠️ Nama dan pekerjaan harus diisi!');
+
+            if(id) {
+                const index = alumni.findIndex(a => a.id == id);
+                if(index !== -1) alumni[index] = {id: parseInt(id), name, year, level, job, testimoni, photo};
+            } else {
+                const newId = Math.max(...alumni.map(a => a.id), 0) + 1;
+                alumni.push({id:newId, name, year, level, job, testimoni, photo});
+            }
+            saveToLocalStorage();
+            renderAlumni();
+            modal.style.display = 'none';
+        };
+
+        window.editAlumni = (id) => {
+            const item = alumni.find(a => a.id === id);
+            if(item) {
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Alumni';
+                document.getElementById('editId').value = item.id;
+                document.getElementById('alumniName').value = item.name;
+                document.getElementById('alumniYear').value = item.year;
+                document.getElementById('alumniLevel').value = item.level;
+                document.getElementById('alumniJob').value = item.job;
+                document.getElementById('alumniTestimoni').value = item.testimoni;
+                if(item.photo) {
+                    document.getElementById('imagePreview').src = item.photo;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                modal.style.display = 'flex';
+            }
+        };
+
+        window.deleteAlumni = (id) => {
+            if(confirm('⚠️ Hapus alumni ini?')) {
+                alumni = alumni.filter(a => a.id !== id);
+                saveToLocalStorage();
+                renderAlumni();
+            }
+        };
+
+        document.getElementById('filterLevel').addEventListener('change', renderAlumni);
+        document.getElementById('filterYear').addEventListener('change', renderAlumni);
+        document.getElementById('searchInput').addEventListener('input', renderAlumni);
+        renderAlumni();
+
+        // ==================== NAVIGASI ====================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                const pages = {
+                    dashboard: 'dashboard.html',
+                    profil: 'profil-yayasan.html',
+                    struktur: 'struktur-organisasi.html',
+                    sekolah: 'data-sekolah.html',
+                    guru: 'data-guru.html',
+                    siswa: 'data-siswa.html',
+                    ekskul: 'ekstrakurikuler.html',
+                    prestasi: 'prestasi.html',
+                    fasilitas: 'fasilitas.html',
+                    galeri: 'galeri.html',
+                    pengumuman: 'pengumuman.html',
+                    alumni: 'alumni.html',
+                    berita: 'berita.html',
+                    kontak: 'kontak.html',
+                    laporan: 'laporan.html'
+                };
+                if(pages[page]) window.location.href = pages[page];
+            });
+        });
+
+        document.getElementById('logoutBtn').onclick = () => {
+            if(confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = '../index.html';
+            }
+        };
+
+        document.getElementById('menuToggle').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+
+        window.onclick = function(event) {
+            if (event.target === modal) modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
